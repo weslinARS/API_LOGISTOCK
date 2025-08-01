@@ -7,6 +7,7 @@ import { Prisma, User } from "~gen-prisma/index";
 
 export interface IUserRepository {
 	findOneById(id: string, args?: findOneUserArgs): Promise<User | null>;
+	findOneByEmail(email: string, args?: findOneUserArgs): Promise<User | null>;
 	findMany(args: findManyUserArgs): Promise<User[]>;
 	update(
 		id: string,
@@ -14,4 +15,6 @@ export interface IUserRepository {
 	): Promise<PrismaRepositoryResponse>;
 	delete(id: string): Promise<PrismaRepositoryResponse>;
 	softDelete(id: string): Promise<PrismaRepositoryResponse>;
+	verifyByEmail(email: string): Promise<boolean>;
+	create(data: Prisma.UserCreateInput): Promise<User>;
 }
