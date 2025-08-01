@@ -30,3 +30,14 @@ export type findManyUserArgs = findOneUserArgs & {
 	where?: Prisma.UserWhereInput;
 	orderBy?: Prisma.UserOrderByWithRelationInput;
 };
+
+// product
+export type findOneProductArgs = CommonAgrs & {
+	include?: Prisma.ProductInclude;
+	select?: Prisma.ProductSelect;
+	omit?: Prisma.ProductOmit;
+};
+export type findManyProductArgs = findOneProductArgs & {
+	where?: Prisma.ProductWhereInput;
+	orderBy?: Prisma.ProductOrderByWithRelationInput;
+};

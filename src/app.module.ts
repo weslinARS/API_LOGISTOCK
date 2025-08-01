@@ -5,6 +5,7 @@ import * as j from "joi";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from './modules/auth/auth.module';
+import { ProductsModule } from './modules/products/products.module';
 
 @Module({
 	imports: [
@@ -26,6 +27,7 @@ import { AuthModule } from './modules/auth/auth.module';
 			inject: [ConfigService],
 		}),
 		AuthModule,
+		ProductsModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
