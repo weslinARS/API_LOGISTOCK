@@ -9,6 +9,24 @@ export class ApiResponse<T> implements IApiResponse<T> {
 	meta: Record<string, unknown>;
 	statusCode?: HttpStatus | undefined;
 	pagination?: IPagination | undefined;
+
+	constructor(
+		options: {
+			message?: string | string[];
+			data?: T;
+			error?: string;
+			meta?: Record<string, unknown>;
+			statusCode?: HttpStatus;
+			pagination?: IPagination;
+		} = {},
+	) {
+		this.message = options.message || "Success";
+		this.data = options.data;
+		this.error = options.error;
+		this.meta = options.meta || {};
+		this.statusCode = options.statusCode || HttpStatus.OK;
+		this.pagination = options.pagination;
+	}
 }
 
 export type ServiceErrorCode =
@@ -28,6 +46,7 @@ export type RepositoryErrorCode =
 	| "RECORD_NOT_FOUND"
 	| "DUPLICATE_RECORD"
 	| "TRANSACTION_ERROR"
+	| "RECORD_ALREADY_EXISTS"
 	| "CONNECTION_ERROR";
 
 interface CustomErrorOptions {
