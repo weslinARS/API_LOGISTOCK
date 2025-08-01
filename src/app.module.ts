@@ -4,6 +4,7 @@ import { JwtModule } from "@nestjs/jwt";
 import * as j from "joi";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
 	imports: [
@@ -24,6 +25,7 @@ import { AppService } from "./app.service";
 			}),
 			inject: [ConfigService],
 		}),
+		AuthModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
