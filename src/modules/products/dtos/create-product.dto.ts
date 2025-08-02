@@ -27,23 +27,19 @@ export class CreateProductDto {
 	})
 	name: string;
 	@ApiProperty({
-		name: "categoryId",
-		description: "ID of the product category",
-		format: "uuid",
+		name: "categoryName",
+		description: "Name of the product category",
 		type: String,
-		example: "123e4567-e89b-12d3-a456-426614174000",
+		example: "Electronics",
 	})
 	@IsNotEmpty({
-		message: "El ID de la categoría del producto es obligatorio",
+		message: "El nombre de la categoría del producto es obligatorio",
 	})
 	@IsString({
 		message:
-			"El ID de la categoría del producto debe ser una cadena de texto",
+			"El nombre de la categoría del producto debe ser una cadena de texto",
 	})
-	@IsUUID("4", {
-		message: "El ID de la categoría del producto debe ser un UUID válido",
-	})
-	categoryId: string;
+	categoryName: string;
 	@ApiProperty({
 		name: "supplierId",
 		description: "ID of the product supplier",
@@ -63,13 +59,19 @@ export class CreateProductDto {
 	})
 	supplierId: string;
 	@ApiProperty({
-		name: "productBrandId",
-		description: "ID of the product brand",
-		format: "uuid",
+		name: "productBrandName",
+		description: "Name of the product brand",
 		type: String,
-		example: "123e4567-e89b-12d3-a456-426614174002",
+		example: "Samsung",
 	})
-	productBrandId: string;
+	@IsNotEmpty({
+		message: "El nombre de la marca del producto es obligatorio",
+	})
+	@IsString({
+		message:
+			"El nombre de la marca del producto debe ser una cadena de texto",
+	})
+	productBrandName: string;
 	@ApiProperty({
 		name: "sku",
 		description: "Stock Keeping Unit of the product",
