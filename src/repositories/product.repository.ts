@@ -13,13 +13,24 @@ import { Prisma, Product } from "~gen-prisma/index";
 export class ProductRepository implements IProductRepository {
 	constructor(private readonly prisma: PrismaService) {}
 	findOneById(id: string, arg?: findOneProductArgs): Promise<Product | null> {
-		throw new Error("Method not implemented.");
+		return this.prisma.product.findUnique({
+			where: {
+				id,
+				isDeleted: false,
+			},
+			...(arg?.include && !arg.select ? { include: arg.include } : {}),
+			...(arg?.select && !arg.include ? { select: arg.select } : {}),
+			...(arg?.omit ? { omit: arg.omit } : {}),
+		});
 	}
+
 	findMany(args: findManyProductArgs): Promise<QueryManyWithCount<Product>> {
 		throw new Error("Method not implemented.");
 	}
 	create(data: Prisma.ProductCreateInput): Promise<Product> {
-		throw new Error("Method not implemented.");
+		return this.prisma.product.create({
+			data,
+		});
 	}
 	update(
 		id: string,
@@ -38,5 +49,14 @@ export class ProductRepository implements IProductRepository {
 	}
 	verifyProductExists(id: string): Promise<boolean> {
 		throw new Error("Method not implemented.");
+	}
+
+	async verifyIfExistsByName(name: string): Promise<boolean> {
+		const record = await this.prisma.product.findFirst({
+			where: {
+				name,
+			},
+		});
+		return !!record;
 	}
 }

@@ -16,30 +16,31 @@ import {
 import { Roles } from "src/shared/decorators/roles/roles.decorator";
 import { ROLES } from "src/shared/enums/roles.enum";
 import { PoliceGuard } from "src/shared/guards/police/police.guard";
-import { CreateProductDto } from "./dtos/create-product.dto";
-import { ProductsService } from "./products.service";
+import { CreateProductBrandDto } from "./dtos/create-product-brand.dto";
+import { ProductBrandsService } from "./product-brands.service";
 
-@Controller("products")
+@Controller("product-brands")
 @ApiBearerAuth()
 @UseGuards(PoliceGuard)
-export class ProductsController {
-	constructor(private readonly productsService: ProductsService) {}
+export class ProductBrandsController {
+	constructor(private readonly productBrandService: ProductBrandsService) {}
 
 	@Post()
 	@ApiOperation({
-		summary: "Create a new product",
+		summary: "Creates a new product brand",
 	})
 	@ApiBody({
-		type: CreateProductDto,
+		type: CreateProductBrandDto,
+		description: "Data to create a new product brand",
 		required: true,
 	})
 	@ApiResponse({
 		status: HttpStatus.CREATED,
-		description: "Product created successfully",
+		description: "Product brand created successfully",
 	})
 	@Roles([ROLES.ADMIN, ROLES.MANAGER])
 	@HttpCode(HttpStatus.CREATED)
-	async createProduct(@Body(new ValidationPipe()) data: CreateProductDto) {
-		return this.productsService.createProduct(data);
+	async create(@Body(new ValidationPipe()) data: CreateProductBrandDto) {
+		return this.productBrandService.create(data);
 	}
 }

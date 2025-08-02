@@ -18,4 +18,5 @@ export interface IProductRepository {
 	softDelete(id: string): Promise<PrismaRepositoryResponse>;
 	restore(id: string): Promise<PrismaRepositoryResponse>;
 	verifyProductExists(id: string): Promise<boolean>;
+	verifyIfExistsByName(name: string): Promise<boolean>;
 }

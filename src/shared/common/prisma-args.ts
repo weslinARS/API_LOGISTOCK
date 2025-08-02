@@ -41,3 +41,29 @@ export type findManyProductArgs = findOneProductArgs & {
 	where?: Prisma.ProductWhereInput;
 	orderBy?: Prisma.ProductOrderByWithRelationInput;
 };
+
+// product category
+
+export type findOneProductCategoryArgs = CommonAgrs & {
+	include?: Prisma.ProductCategoryInclude;
+	select?: Prisma.ProductCategorySelect;
+	omit?: Prisma.ProductCategoryOmit;
+};
+
+export type findManyProductCategoryArgs = findOneProductCategoryArgs & {
+	where?: Prisma.ProductCategoryWhereInput;
+	orderBy?: Prisma.ProductCategoryOrderByWithRelationInput;
+};
+
+// product brand
+
+export type findOneProductBrandArgs = CommonAgrs & {
+	include?: Prisma.ProductBrandInclude;
+	select?: Prisma.ProductBrandSelect;
+	omit?: Prisma.ProductBrandOmit;
+};
+
+export type findManyProductBrandArgs = findOneProductBrandArgs & {
+	where?: Prisma.ProductBrandWhereInput;
+	orderBy?: Prisma.ProductBrandOrderByWithRelationInput;
+};
