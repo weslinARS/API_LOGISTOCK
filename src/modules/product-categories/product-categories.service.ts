@@ -16,7 +16,6 @@ export class ProductCategoriesService {
 				await this.productCategoryRepository.verifyIfExistsByName(
 					data.name,
 				);
-			console.debug("Product category exists:", exists);
 			if (exists)
 				throw new CustomError({
 					errorCode: "RECORD_ALREADY_EXISTS",
