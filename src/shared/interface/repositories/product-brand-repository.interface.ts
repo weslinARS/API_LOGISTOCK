@@ -11,6 +11,7 @@ export interface IProductBrandRepository {
 		id: string,
 		args: findOneProductBrandArgs,
 	): Promise<ProductBrand | null>;
+	findByName(name: string): Promise<ProductBrand | null>;
 	verifyIfExistsByName(name: string): Promise<boolean>;
 	verifyIfExistsById(id: string): Promise<boolean>;
 	findMany(

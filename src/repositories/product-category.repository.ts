@@ -27,12 +27,39 @@ export class ProductCategoryRepository implements IProductCategoryRepository {
 		});
 	}
 
+	async findByName(name: string): Promise<ProductCategory | null> {
+		return this.prisma.productCategory.findFirst({
+			where: {
+				name,
+			},
+		});
+	}
+
 	async findMany(
 		args: findManyProductCategoryArgs,
 	): Promise<QueryManyWithCount<ProductCategory>> {
-		const { allRecords, include, select, pageSize, pageIndex, where } =
-			args;
-		const baseWhere: Prisma.ProductCategoryWhereInput = where ? where : {};
+		const {
+			allRecords,
+			include,
+			select,
+			pageSize,
+			pageIndex,
+			where,
+			isSearchMode,
+			includeDeleted,
+		} = args;
+		const baseWhere: Prisma.ProductCategoryWhereInput = includeDeleted
+			? where
+				? where
+				: {}
+			: {
+					AND: [
+						{
+							isDeleted: false,
+						},
+						...(where ? [where] : []),
+					],
+				};
 		const paginationArgs =
 			allRecords == false &&
 			pageIndex !== undefined &&
@@ -44,7 +71,16 @@ export class ProductCategoryRepository implements IProductCategoryRepository {
 				: {};
 		const findManyArgs: Prisma.ProductCategoryFindManyArgs = {
 			...(include && !select ? { include } : {}),
-			...(select && !include ? { select } : {}),
+			...(isSearchMode
+				? {
+						select: {
+							name: true,
+							id: true,
+						},
+					}
+				: select && !include
+					? { select : select }
+					: {}),
 			...(args.omit ? { omit: args.omit } : {}),
 			where: baseWhere,
 			...paginationArgs,

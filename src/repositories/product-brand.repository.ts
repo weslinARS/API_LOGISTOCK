@@ -30,6 +30,13 @@ export class ProductBrandRepository implements IProductBrandRepository {
 		});
 	}
 
+	async findByName(name: string): Promise<ProductBrand | null> {
+		return this.prisma.productBrand.findFirst({
+			where: {
+				name,
+			},
+		});
+	}
 	async verifyIfExistsByName(name: string): Promise<boolean> {
 		const record = await this.prisma.productBrand.findFirst({
 			where: {

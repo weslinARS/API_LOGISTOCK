@@ -1,5 +1,5 @@
 import { HttpStatus, Inject, Injectable } from "@nestjs/common";
-import { CustomError } from "src/shared/class/api-response.class";
+import { ApiResponse, CustomError } from "src/shared/class/api-response.class";
 import {
 	PRODUCT_BRAND_REPOSITORY_SYMBOL,
 	PRODUCT_CATEGORY_REPOSITORY_SYMBOL,
@@ -33,30 +33,64 @@ export class ProductsService {
 					errorCode: "RECORD_ALREADY_EXISTS",
 				});
 			// verify if brand exists
-			const brandExists =
-				await this.productBrandRepository.verifyIfExistsById(
-					data.productBrandId,
-				);
 
-			if (!brandExists)
-				throw new CustomError({
-					message: "La marca del producto no existe",
-					statusCode: HttpStatus.NOT_FOUND,
-					errorCode: "RECORD_NOT_FOUND",
+			let brand = await this.productBrandRepository.findByName(
+				data.productBrandName,
+			);
+			if (!brand) {
+				// create brand if not exists
+				brand = await this.productBrandRepository.create({
+					name: data.productBrandName,
 				});
-			// verify if category exists
 
-			const categoryExists =
-				await this.productCategoryRepository.verifyIfExistsById(
-					data.categoryId,
-				);
+				if (!brand)
+					throw new CustomError({
+						statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+						errorCode: "INTERNAL_SERVER_ERROR",
+						message: "Error al crear la marca del producto",
+					});
+			}
 
-			if (!categoryExists)
+			const category = await this.productCategoryRepository.findByName(
+				data.categoryName,
+			);
+
+			if (!category)
 				throw new CustomError({
 					statusCode: HttpStatus.NOT_FOUND,
 					errorCode: "RECORD_NOT_FOUND",
 					message: "La categoria del producto no existe",
 				});
+
+			// create product
+			const product = await this.productRepository.create({
+				name: data.name,
+				category: {
+					connect: {
+						id: category.id,
+					},
+				},
+				entryPrice: data.entryPrice,
+				sku: data.sku,
+				unitPrice: data.unitPrice,
+				supplier: {
+					connect: {
+						id: data.supplierId,
+					},
+				},
+				description: data.description,
+				productBrand: {
+					connect: {
+						id: brand.id,
+					},
+				},
+			});
+
+			return new ApiResponse({
+				statusCode: HttpStatus.CREATED,
+				message: "Producto creado correctamente",
+				data: product,
+			});
 		} catch (error) {
 			if (error instanceof CustomError) throw error.toHttpException();
 			throw error;
