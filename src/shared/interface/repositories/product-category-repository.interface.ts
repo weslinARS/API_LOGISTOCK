@@ -1,9 +1,9 @@
+import { Prisma, ProductCategory } from "@prisma/client";
 import {
 	findManyProductCategoryArgs,
 	findOneProductCategoryArgs,
 	QueryManyWithCount,
 } from "src/shared/common/prisma-args";
-import { Prisma, ProductCategory } from "~gen-prisma/index";
 
 export interface IProductCategoryRepository {
 	create(data: Prisma.ProductCategoryCreateInput): Promise<ProductCategory>;

@@ -1,10 +1,10 @@
+import { Prisma, Product } from "@prisma/client";
 import {
 	findManyProductArgs,
 	findOneProductArgs,
 	PrismaRepositoryResponse,
 	QueryManyWithCount,
 } from "src/shared/common/prisma-args";
-import { Prisma, Product } from "~gen-prisma/index";
 
 export interface IProductRepository {
 	findOneById(id: string, arg?: findOneProductArgs): Promise<Product | null>;

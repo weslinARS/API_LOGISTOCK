@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { $Enums } from "@prisma/client";
 import { IsEmail, IsIn, IsNotEmpty, IsString, Length } from "class-validator";
-import { $Enums } from "~gen-prisma/index";
 
 export class SignUpUserDto {
 	@ApiProperty({

@@ -1,5 +1,5 @@
+import { $Enums, PrismaClient } from "@prisma/client";
 import * as bcrypt from "bcryptjs";
-import { $Enums, PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient();
 interface signUpUser {
@@ -20,7 +20,7 @@ const user: signUpUser = {
 export async function main() {
 	const hashedPassword = await bcrypt.hash(user.password, 10);
 
-	const userCreated = await prisma.user.create({
+	await prisma.user.create({
 		data: {
 			...user,
 			password: hashedPassword,

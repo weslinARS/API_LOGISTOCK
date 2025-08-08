@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { Prisma, ProductCategory } from "@prisma/client";
 import { PrismaService } from "src/modules/prisma/prisma.service";
 import {
 	findManyProductCategoryArgs,
@@ -6,7 +7,6 @@ import {
 	QueryManyWithCount,
 } from "src/shared/common/prisma-args";
 import { IProductCategoryRepository } from "src/shared/interface/repositories/product-category-repository.interface";
-import { Prisma, ProductCategory } from "~gen-prisma/index";
 
 @Injectable()
 export class ProductCategoryRepository implements IProductCategoryRepository {
@@ -79,7 +79,7 @@ export class ProductCategoryRepository implements IProductCategoryRepository {
 						},
 					}
 				: select && !include
-					? { select : select }
+					? { select: select }
 					: {}),
 			...(args.omit ? { omit: args.omit } : {}),
 			where: baseWhere,

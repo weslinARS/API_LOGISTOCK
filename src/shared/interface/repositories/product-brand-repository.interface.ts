@@ -1,9 +1,9 @@
+import { Prisma, ProductBrand } from "@prisma/client";
 import {
 	findManyProductBrandArgs,
 	findOneProductBrandArgs,
 	QueryManyWithCount,
 } from "src/shared/common/prisma-args";
-import { Prisma, ProductBrand } from "~gen-prisma/index";
 
 export interface IProductBrandRepository {
 	create(data: Prisma.ProductBrandCreateInput): Promise<ProductBrand>;

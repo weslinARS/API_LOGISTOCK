@@ -1,4 +1,4 @@
-import { Prisma } from "~gen-prisma/index";
+import { Prisma } from "@prisma/client";
 
 export type CommonAgrs = {
 	includeDeleted?: boolean;

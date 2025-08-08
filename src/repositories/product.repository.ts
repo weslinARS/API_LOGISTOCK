@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { Prisma, Product } from "@prisma/client";
 import { PrismaService } from "src/modules/prisma/prisma.service";
 import {
 	findManyProductArgs,
@@ -7,7 +8,6 @@ import {
 	QueryManyWithCount,
 } from "src/shared/common/prisma-args";
 import { IProductRepository } from "src/shared/interface/repositories/product-repository.interface";
-import { Prisma, Product } from "~gen-prisma/index";
 
 @Injectable()
 export class ProductRepository implements IProductRepository {

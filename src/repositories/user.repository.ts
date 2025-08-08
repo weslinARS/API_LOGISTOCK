@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { Prisma, User } from "@prisma/client";
 import { PrismaService } from "src/modules/prisma/prisma.service";
 import {
 	findManyUserArgs,
@@ -6,7 +7,6 @@ import {
 	PrismaRepositoryResponse,
 } from "src/shared/common/prisma-args";
 import { IUserRepository } from "src/shared/interface/repositories/user-repository.interface";
-import { Prisma, User } from "~gen-prisma/index";
 
 @Injectable()
 export class UserRepository implements IUserRepository {
