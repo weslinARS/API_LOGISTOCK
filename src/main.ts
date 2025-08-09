@@ -7,12 +7,12 @@ import {
 } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import * as cookieParser from "cookie-parser";
 import { NextFunction, Request, Response } from "express";
 import { writeFileSync } from "fs";
 import { join } from "path";
 import { SwaggerTheme, SwaggerThemeNameEnum } from "swagger-themes";
 import { AppModule } from "./app.module";
-
 // Logger Middleware
 function loggerMiddleware(req: Request, res: Response, next: NextFunction) {
 	const logger = new Logger("HTTP");
@@ -85,9 +85,11 @@ async function bootstrap() {
 		}),
 	);
 
+	app.use(cookieParser(process.env.COOKIE_SECRET, {}));
 	app.enableCors({
-		origin: "*",
+		origin: "http://localhost:5173",
 		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+		credentials: true,
 	});
 	await app.listen(process.env.PORT ?? 3004);
 }

@@ -15,6 +15,33 @@ export class AuthService {
 		private readonly jwtService: JwtService,
 	) {}
 
+	async getMe(jwt: string) {
+		if (jwt == undefined || jwt == null || jwt === "") {
+			throw new CustomError({
+				errorCode: "UNAUTHORIZED",
+				message: "No token provided",
+				statusCode: HttpStatus.UNAUTHORIZED,
+			});
+		}
+
+		const payload = await this.verifyToken(jwt);
+
+		if (!payload) {
+			throw new CustomError({
+				errorCode: "UNAUTHORIZED",
+				message: "Invalid token",
+				statusCode: HttpStatus.UNAUTHORIZED,
+			});
+		}
+
+		return this.userRepository.findOneById(payload.id, {
+			omit: {
+				password: true,
+				createdAt: true,
+				isDeleted: true,
+			},
+		});
+	}
 	async signUp(data: SignUpUserDto) {
 		try {
 			const exist = await this.userRepository.verifyByEmail(data.email);
