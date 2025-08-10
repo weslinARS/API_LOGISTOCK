@@ -101,6 +101,7 @@ export class UserRepository implements IUserRepository {
 			where,
 		} = args;
 
+		console.debug("where is ", where);
 		const baseWhere: Prisma.UserWhereInput = includeDeleted
 			? where
 				? where
