@@ -25,6 +25,15 @@ import { UsersService } from "./users.service";
 export class UsersController {
 	constructor(private readonly usersService: UsersService) {}
 
+	@Get(":id")
+	@ApiOperation({
+		summary: "Retrieve a user by ID",
+	})
+	@Roles([ROLES.ADMIN])
+	@HttpCode(HttpStatus.OK)
+	async findOne(@Param(new ValidationPipe()) params: ParamOneUser) {
+		return this.usersService.findOne(params.id);
+	}
 	@Get()
 	@ApiOperation({
 		summary: "Retrieve multiple users paginated",

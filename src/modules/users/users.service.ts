@@ -11,7 +11,31 @@ export class UsersService {
 		@Inject(USER_REPOSITORY_SYMBOL)
 		private readonly userRepository: IUserRepository,
 	) {}
-
+	async findOne(id: string) {
+		try {
+			const user = await this.userRepository.findOneById(id, {
+				omit: {
+					password: true,
+				},
+			});
+			if (!user) {
+				throw new CustomError({
+					errorCode: "RECORD_NOT_FOUND",
+					message: "El usuario no existe",
+					statusCode: HttpStatus.NOT_FOUND,
+				});
+			}
+			return new ApiResponse({
+				message: "Usuario recuperado correctamente",
+				data: user,
+			});
+		} catch (error) {
+			if (error instanceof CustomError) {
+				throw error.toHttpException();
+			}
+			throw error;
+		}
+	}
 	async findMany(args: QueryParamBaseManyRecords) {
 		try {
 			const { allRecords, includeDeleted, pageIndex, pageSize } = args;
