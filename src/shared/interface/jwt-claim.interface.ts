@@ -1,4 +1,4 @@
-import { $Enums } from "~gen-prisma/index";
+import { $Enums } from "@prisma/client";
 
 export interface JwtClaim {
 	id: string;

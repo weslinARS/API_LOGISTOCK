@@ -1,0 +1,7 @@
+{
+	"editor.fontFamily": "IBM Plex Mono",
+	"editor.fontWeight": "normal",
+	"editor.fontSize": 16,
+	"editor.wordWrap": "on",
+	"editor.formatOnSave": true
+}

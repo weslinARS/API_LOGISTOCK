@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsIn, IsNotEmpty, IsString, Length } from "class-validator";
-import { $Enums } from "~gen-prisma/index";
+import { $Enums } from "@prisma/client";
+import { IsEmail, IsEnum, IsNotEmpty, IsString, Length } from "class-validator";
 
 export class SignUpUserDto {
 	@ApiProperty({
@@ -71,7 +71,7 @@ export class SignUpUserDto {
 	@IsNotEmpty({
 		message: "El rol es requerido",
 	})
-	@IsIn(["admin", "seller", "customer"], {
+	@IsEnum($Enums.UserRole, {
 		message:
 			"El rol debe ser uno de los siguientes: " +
 			Object.values($Enums.UserRole).join(", "),
