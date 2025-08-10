@@ -1,8 +1,9 @@
 import { HttpStatus, Inject, Injectable } from "@nestjs/common";
-import { QueryParamBaseManyRecords } from "src/shared/class/api-request.class";
+import { $Enums } from "@prisma/client";
 import { ApiResponse, CustomError } from "src/shared/class/api-response.class";
 import { USER_REPOSITORY_SYMBOL } from "src/shared/common/common-constant";
 import { IUserRepository } from "src/shared/interface/repositories/user-repository.interface";
+import { QueryParamManyUserDto } from "./dto/query-param-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Injectable()
@@ -36,15 +37,23 @@ export class UsersService {
 			throw error;
 		}
 	}
-	async findMany(args: QueryParamBaseManyRecords) {
+	async findMany(args: QueryParamManyUserDto) {
 		try {
-			const { allRecords, includeDeleted, pageIndex, pageSize } = args;
-
+			const { allRecords, includeDeleted, pageIndex, pageSize, filter } =
+				args;
+			console.debug("filter is ", filter);
 			const result = await this.userRepository.findMany({
 				allRecords,
 				includeDeleted,
 				pageSize,
 				pageIndex,
+				...(filter
+					? {
+							where: {
+								role: filter as $Enums.UserRole,
+							},
+						}
+					: {}),
 			});
 
 			return new ApiResponse({
