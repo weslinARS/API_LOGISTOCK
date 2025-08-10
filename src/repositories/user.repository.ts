@@ -95,7 +95,6 @@ export class UserRepository implements IUserRepository {
 			include,
 			includeDeleted,
 			isSearchMode,
-
 			pageIndex,
 			pageSize,
 			select,

@@ -12,11 +12,11 @@ import {
 	ValidationPipe,
 } from "@nestjs/common";
 import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
-import { QueryParamBaseManyRecords } from "src/shared/class/api-request.class";
 import { Roles } from "src/shared/decorators/roles/roles.decorator";
 import { ROLES } from "src/shared/enums/roles.enum";
 import { PoliceGuard } from "src/shared/guards/police/police.guard";
 import { ParamOneUser } from "./dto/params-user.dto";
+import { QueryParamManyUserDto } from "./dto/query-param-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UsersService } from "./users.service";
 
@@ -53,10 +53,15 @@ export class UsersController {
 		required: false,
 		type: Boolean,
 	})
+	@ApiQuery({
+		name: "filter",
+		required: false,
+		type: String,
+	})
 	@Roles([ROLES.ADMIN])
 	@HttpCode(HttpStatus.OK)
 	async findMany(
-		@Query(new ValidationPipe()) queryParams: QueryParamBaseManyRecords,
+		@Query(new ValidationPipe()) queryParams: QueryParamManyUserDto,
 	) {
 		return this.usersService.findMany(queryParams);
 	}
