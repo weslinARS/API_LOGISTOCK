@@ -1,7 +1,6 @@
 import {
 	Body,
 	Controller,
-	Get,
 	HttpCode,
 	HttpStatus,
 	Post,
@@ -52,7 +51,7 @@ export class AuthController {
 		@Res() response: Response,
 	) {
 		const result = await this.authService.validateUser(data);
-		const { token, ...userData } = result.data;
+		const { token, user: userData } = result.data;
 		// attach a cookie
 		response.cookie("jwt", token, {
 			httpOnly: true,
@@ -97,7 +96,57 @@ export class AuthController {
 		return this.authService.signUp(data);
 	}
 
-	@Post("log-out")
+	@Post("sign-up-pdf")
+	@ApiBearerAuth()
+	@ApiOperation({
+		summary: "Sign up a new user and generate PDF report",
+		description:
+			"Endpoint to sign up a new user and receive a PDF report with user data.",
+	})
+	@ApiBody({
+		type: SignUpUserDto,
+		required: true,
+	})
+	@ApiResponse({
+		status: HttpStatus.CREATED,
+		description: "User signed up successfully and PDF generated.",
+	})
+	@ApiResponse({
+		status: HttpStatus.BAD_REQUEST,
+		description: "Invalid input data.",
+	})
+	@Roles([ROLES.ADMIN])
+	@UseGuards(PoliceGuard)
+	@HttpCode(HttpStatus.CREATED)
+	async signUpWithPdf(
+		@Body(new ValidationPipe()) data: SignUpUserDto,
+		@Res() response: Response,
+	) {
+		const result = await this.authService.signUp(data);
+		if (result.data) {
+			const pdfBuffer = await this.authService.generateUserPdf(
+				result.data,
+			);
+
+			response.setHeader("Content-Type", "application/pdf");
+			response.setHeader(
+				"Content-Disposition",
+				`attachment; filename="usuario-${result.data.firstName}-${result.data.lastName}.pdf"`,
+			);
+			response.setHeader("Content-Length", pdfBuffer.length);
+
+			response.send(pdfBuffer);
+		} else {
+			response.json(
+				new APIResponse({
+					message: "Usuario creado correctamente",
+					statusCode: HttpStatus.CREATED,
+				}),
+			);
+		}
+	}
+
+	@Post("sign-out")
 	async logOut(
 		@Request() req: Request,
 		@Res({
@@ -114,7 +163,8 @@ export class AuthController {
 		);
 	}
 
-	@Get("me")
+	@Post("me")
+	@HttpCode(HttpStatus.OK)
 	async getMe(@Cookies("jwt") jwt: string) {
 		return this.authService.getMe(jwt);
 	}

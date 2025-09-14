@@ -4,11 +4,12 @@ import { JwtModule } from "@nestjs/jwt";
 import * as j from "joi";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { AuthModule } from './modules/auth/auth.module';
-import { ProductsModule } from './modules/products/products.module';
-import { ProductCategoriesModule } from './modules/product-categories/product-categories.module';
-import { ProductBrandsModule } from './modules/product-brands/product-brands.module';
-import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from "./modules/auth/auth.module";
+import { PdfModule } from "./modules/pdf/pdf.module";
+import { ProductBrandsModule } from "./modules/product-brands/product-brands.module";
+import { ProductCategoriesModule } from "./modules/product-categories/product-categories.module";
+import { ProductsModule } from "./modules/products/products.module";
+import { UsersModule } from "./modules/users/users.module";
 
 @Module({
 	imports: [
@@ -30,6 +31,7 @@ import { UsersModule } from './modules/users/users.module';
 			inject: [ConfigService],
 		}),
 		AuthModule,
+		PdfModule,
 		ProductsModule,
 		ProductCategoriesModule,
 		ProductBrandsModule,
